@@ -1,6 +1,20 @@
 <h1>Powerhouse#results</h1>
 <p>Find me in app/views/powerhouse/results.html.erb</p>
 
-<% @results.each do |tweet| %>
-	<%= tweet.text %> <br />
-<% end %>
+<table>
+	<thead>
+		<td>Id.</td>
+		<td>User</td>
+		<td>Tweet</td>
+	</thead>
+	<tbody>
+		<% @results.each do |tweet| %>
+			<tr>
+				<td><%= tweet.id %></td>
+				<td><%= tweet.user.name %></td>
+				<td><%= tweet.text %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+

@@ -12,7 +12,7 @@ class PowerhouseController < ApplicationController
   	puts "Got client"
 
   	# Getting search results
-  	@results  = @twitter_client.search(@query, result_type: "recent", lang: "en").take(10)
+  	@results  = @twitter_client.search(@query, result_type: "recent", lang: "en").take(30)
   	puts @results
   end
 
