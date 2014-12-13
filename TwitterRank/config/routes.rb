@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
+  get 'powerhouse/home'
+
+  post 'powerhouse/results'
+
   resources :tweets
+
+  root 'powerhouse#home'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

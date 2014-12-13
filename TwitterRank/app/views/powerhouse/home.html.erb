@@ -1,0 +1,13 @@
+<h1>Powerhouse#index</h1>
+<p>Find me in app/views/powerhouse/index.html.erb</p>
+
+<p>
+
+<%= form_tag controller: "powerhouse", action: "results" do %>
+	<div>
+		<h2>Enter Keywords</h2>
+		<%= text_field_tag "query" %>
+	</div>
+	<%= submit_tag "Get tweets" %>
+<% end %>
+</p>
