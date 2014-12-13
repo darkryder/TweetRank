@@ -6,8 +6,8 @@ module PowerhouseHelper
 		unless @@client
 			puts "Creating new client"
 			@@client = Twitter::REST::Client.new do |config|
-			  config.consumer_key    = "oAGwa5JCZazLoknxuRPAknQkp"
-			  config.consumer_secret = "GH9kaL47EKUzNBMNuZgEMddnxVozZRxWKxmAR9ny4e1JQogODf"
+			  config.consumer_key    = ENV['twitter_consumer_key']
+			  config.consumer_secret = ENV['twitter_consumer_secret']
 			end
 		end
 		@@client
