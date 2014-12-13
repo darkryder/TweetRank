@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'powerhouse/home'
+  get 'powerhouse/get_tweet_rating_by_api'
 
   post 'powerhouse/results'
 
