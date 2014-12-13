@@ -3,6 +3,7 @@
 
 <p>
 
+<h2> Get tweets from twitter </h2>
 <%= form_tag controller: "powerhouse", action: "results" do %>
 	<div>
 		<h2>Enter Keywords</h2>
@@ -10,4 +11,15 @@
 	</div>
 	<%= submit_tag "Get tweets" %>
 <% end %>
+
+<h2> Understand rating from API </h2>
+<%= form_tag controller: "powerhouse", action: "get_specific_query_rating_by_api" do %>
+	<div>
+		<h2>Enter Keywords</h2>
+		<%= text_field_tag "query" %>
+	</div>
+	<%= submit_tag "Get Rating" %>
+<% end %>
+
+
 </p>

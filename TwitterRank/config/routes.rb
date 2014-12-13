@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   post 'powerhouse/results'
 
+  post 'powerhouse/get_specific_query_rating_by_api'
+
   resources :tweets
 
   root 'powerhouse#home'
