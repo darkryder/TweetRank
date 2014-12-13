@@ -41,12 +41,13 @@ class PowerhouseController < ApplicationController
   end
 
   def get_tweet_rating_by_api
-  	@query = params[:query]
-
   	options = {:data => [{:text => @tweet.data}]}
+
+  	@query = params[:query]
   	unless @query == ''
   		options[:data][0]["query"] =  @query
   	end
+  	
   	response = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
 						:body => options, :headers => { 'Content-Type' => 'application/json' })
   	puts response
