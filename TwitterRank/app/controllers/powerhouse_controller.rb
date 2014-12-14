@@ -55,6 +55,7 @@ class PowerhouseController < ApplicationController
   	@response = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
 						:body => options.to_json, :headers => { 'Content-Type' => 'application/json' })
   	puts "Response: " + @response.read_body
+  	@response = JSON.parse @response.read_body
   end
 
   private
