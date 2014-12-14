@@ -52,46 +52,55 @@ class PowerhouseController < ApplicationController
   	puts "tweet: " + @tweet.to_json.to_s
   	puts "query: " + @query.to_s
   	
-  	unless @query == ''
-  		options[:data][0][:query] =  @query
-  	end
-  	puts "Options: " + options.to_s
-  	@response_140 = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
-						:body => options.to_json, :headers => { 'Content-Type' => 'application/json' })
-  	puts "Response: " + @response_140.read_body
+  	if !@tweet.sentiment_result
+  		puts "Getting sentiment140 result"
+	  	unless @query == ''
+	  		options[:data][0][:query] =  @query
+	  	end
+	  	puts "Options: " + options.to_s
+	  	@response_140 = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
+							:body => options.to_json, :headers => { 'Content-Type' => 'application/json' })
+	  	puts "Response: " + @response_140.read_body
 
-  	@response_140 = JSON.parse(@response_140.read_body)["data"][0]["polarity"].to_i
+	  	temp = JSON.parse(@response_140.read_body)["data"][0]["polarity"].to_i
+	  	@tweet.sentiment_result = temp
+	  	@tweet.save
+	end
 
+	@response_140 = @tweet.sentiment_result
 
+	if !@tweet.wot_result
+		puts "Getting WOT result"
+	  	@response_wot = nil
+	  	sites = ""
+	  	temp = URI.extract(@tweet.data, ['http', 'https'])
+	  	if temp
+	  		temp.each do |a|
 
-  	@response_wot = nil
+	  			if a.include? "://t.co/"
+	  				t = HTTParty.get(a)
+	  				a = t.request.last_uri.to_s
+	  			end
 
-  	sites = ""
-  	temp = URI.extract(@tweet.data, ['http', 'https'])
-  	if temp
-  		temp.each do |a|
+	  			a = URI.join(a, "/").to_s
 
-  			if a.include? "://t.co/"
-  				t = HTTParty.get(a)
-  				a = t.request.last_uri.to_s
-  			end
+	  			sites += a  			
+	  			if a[-1, 1] != '/'
+		  			sites += '/'
+		  		end
+			end
+	  	end
+	  	puts "Sites: " + sites
 
-  			a = URI.join(a, "/").to_s
-
-  			sites += a  			
-  			if a[-1, 1] != '/'
-	  			sites += '/'
-	  		end
-		end
-  	end
-  	puts "Sites: " + sites
-
-  	if sites
-  		key = wot_key
-  		# debugger
-  		@response_wot = HTTParty.get("http://api.mywot.com/0.4/public_link_json2?hosts=#{sites}&key=#{key}")
-  		@response_wot = JSON.parse @response_wot.read_body
-  	end
+	  	if sites
+	  		key = wot_key
+	  		# debugger
+	  		@response_wot = HTTParty.get("http://api.mywot.com/0.4/public_link_json2?hosts=#{sites}&key=#{key}")
+	  		@tweet.wot_result = @response_wot.read_body
+	  		@tweet.save
+	  	end
+	end
+  	@response_wot = JSON.parse @tweet.wot_result
 
   end
 

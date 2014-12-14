@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141213121024) do
+ActiveRecord::Schema.define(version: 20141214142344) do
 
   create_table "tweets", force: true do |t|
     t.integer  "identifier"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sentiment_result"
+    t.text     "wot_result"
   end
 
 end
