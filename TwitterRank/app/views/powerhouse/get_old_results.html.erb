@@ -1,0 +1,22 @@
+<h1>Powerhouse#results</h1>
+<p>Find me in app/views/powerhouse/results.html.erb</p>
+
+<table>
+	<thead>
+		<td><strong>Action</strong></td>
+		<td><strong>id</strong></td>
+		<td><strong>Tweet</strong></td>
+	</thead>
+	<tbody>
+		<% @tweets.each do |tweet| %>
+			<tr>
+				<td>
+					<a href= "<%= powerhouse_get_tweet_rating_by_api_path %>?id=<%= tweet.identifier %>">
+					Get sentiment </a>
+				</td>
+				<td><%= tweet.identifier %></td>
+				<td><%= tweet.data %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

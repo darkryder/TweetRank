@@ -27,6 +27,10 @@ class PowerhouseController < ApplicationController
 
   end
 
+  def get_old_results
+  	@tweets = Tweet.all
+  end
+
   def get_specific_query_rating_by_api
   	@query = get_only_qeuery_params[:query]
   	# mHttpMethods = include 'HTTParty'
@@ -52,10 +56,32 @@ class PowerhouseController < ApplicationController
   		options[:data][0][:query] =  @query
   	end
   	puts "Options: " + options.to_s
-  	@response = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
+  	@response_140 = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
 						:body => options.to_json, :headers => { 'Content-Type' => 'application/json' })
-  	puts "Response: " + @response.read_body
-  	@response = JSON.parse @response.read_body
+  	puts "Response: " + @response_140.read_body
+
+  	@response_140 = JSON.parse(@response_140.read_body)["data"][0]["polarity"].to_i
+
+
+
+  	@response_wot = nil
+
+  	sites = ""
+  	temp = URI.extract(@tweet.data, ['http', 'https'])
+  	if temp
+  		temp.each do |a|
+  			sites += a  			
+		end
+  	end
+  	puts "Sites: " + sites
+
+  	if sites
+  		key = wot_key
+  		# debugger
+  		@response_wot = HTTParty.get("http://api.mywot.com/0.4/public_link_json2?hosts=#{sites}&key=#{key}")
+  		@response_wot = JSON.parse @response_wot.read_body
+  	end
+
   end
 
   private

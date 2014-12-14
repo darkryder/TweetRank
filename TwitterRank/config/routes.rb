@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'powerhouse/home'
   get 'powerhouse/get_tweet_rating_by_api'
 
+  get 'powerhouse/get_old_results'
+
   post 'powerhouse/results'
 
   post 'powerhouse/get_specific_query_rating_by_api'

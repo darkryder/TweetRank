@@ -1,10 +1,28 @@
-<h3>Polarity: <%=  @response["data"][0]["polarity"] %></h3>
+<h2> Tweet: <%= @tweet.data %></h2>
 
-<br />
+<h3>Response from sentiment140 api</h3>
 
-The polarity values are:
-<ul>
-<li>0: negative </li>
-<li>2: neutral </li>
-<li>4: positive </li>
-</ul>
+<h4>Polarity: 
+<%  if @response_140 == 0 %> 
+	Negative 
+<% elsif @response_140 == 2 %>
+	Nuetral
+<% else %>
+	Positive
+<% end %>
+
+</h4>
+
+<hr />
+
+<h3>Response from WOT api</h3>
+<% if @response_wot.empty? %>
+	No links were found in the tweet
+<% else %>
+	<%= @response_wot %>
+	<ul>
+	<% @response_wot.each do |key, response| %>
+		<li><strong><%= response["target"] %>: </strong> <%= response %></li>
+	<% end %>
+	</ul>
+<% end %>

@@ -13,4 +13,8 @@ module PowerhouseHelper
 		@@client
 	end
 
+	def wot_key
+		ENV['wot_key']
+	end
+
 end
