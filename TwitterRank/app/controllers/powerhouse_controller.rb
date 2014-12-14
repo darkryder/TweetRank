@@ -78,8 +78,12 @@ class PowerhouseController < ApplicationController
 	  		temp.each do |a|
 
 	  			if a.include? "://t.co/"
-	  				t = HTTParty.get(a)
-	  				a = t.request.last_uri.to_s
+
+	  				t = HTTParty.get("http://expandurl.appspot.com/expand?url=#{CGI::escapeHTML(a)}")
+	  				a = JSON.parse(t.read_body)["end_url"]
+	  				
+	  				# t = HTTParty.get(a)
+	  				# a = t.request.last_uri.to_s
 	  			end
 
 	  			a = URI.join(a, "/").to_s
@@ -101,7 +105,6 @@ class PowerhouseController < ApplicationController
 	  	end
 	end
   	@response_wot = JSON.parse @tweet.wot_result
-
   end
 
   private

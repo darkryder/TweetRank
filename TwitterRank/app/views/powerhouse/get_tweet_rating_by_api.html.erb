@@ -19,10 +19,45 @@
 <% if @response_wot.empty? %>
 	No links were found in the tweet
 <% else %>
-	<%= @response_wot %>
+	<strong>API result: <%= @response_wot %></strong>
 	<ul>
 	<% @response_wot.each do |key, response| %>
-		<li><strong><%= response["target"] %>: </strong> <%= response %></li>
+		<li>
+			<strong><%= response["target"] %>: </strong>
+
+			<% unless (response.keys - %w[target]).any? %>
+				There is no data in the WOT db regarding this site.
+			<% else %>
+				<br />
+			<% end %>
+
+			<% if response["0"] != nil %>
+				<strong>Trustworthiness: <%= response["0"][0] %></strong> according <%= response["0"][1] %> ratings  <br />
+			<% end %>
+
+			<% if response["4"] != nil %>
+				<strong>Child Safety: <%= response["4"][0] %></strong> according <%= response["4"][1] %> ratings  <br />
+			<% end %>
+
+			<% if response["categories"] != nil %>
+				<strong>Categories Result</strong>
+				<ul>
+				<% response["categories"].each do |code, rep| %>
+					<li><%= code %>: <%= rep %></li>
+				<% end %>
+				</ul>
+			<% end %>
+
+			<% if response["blacklists"] != nil %>
+				<strong>This site has been blacklisted for: </strong>
+				<ol>
+					<% response["blacklists"].each do |k,v| %>
+					<li><strong><%= k %></strong></li>
+					<% end %>
+				</ol>
+			<% end %>
+
+		</li>
 	<% end %>
 	</ul>
 <% end %>
