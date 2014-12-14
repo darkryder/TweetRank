@@ -12,7 +12,7 @@
 		<% @results.each do |tweet| %>
 			<tr>
 				<td>
-					<a href= "<%= powerhouse_get_tweet_rating_by_api_path %>?id=#{tweet.id}&query=#{@query}">
+					<a href= "<%= powerhouse_get_tweet_rating_by_api_path %>?id=<%= tweet.id %>&query=<%= @query %>">
 					Get sentiment </a>
 				</td>
 				<td><%= tweet.id %></td>

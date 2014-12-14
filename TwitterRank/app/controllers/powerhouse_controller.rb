@@ -44,13 +44,17 @@ class PowerhouseController < ApplicationController
   	options = {:data => [{:text => @tweet.data}]}
 
   	@query = params[:query]
-  	unless @query == ''
-  		options[:data][0]["query"] =  @query
-  	end
   	
-  	response = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
-						:body => options, :headers => { 'Content-Type' => 'application/json' })
-  	puts response
+  	puts "tweet: " + @tweet.to_json.to_s
+  	puts "query: " + @query.to_s
+  	
+  	unless @query == ''
+  		options[:data][0][:query] =  @query
+  	end
+  	puts "Options: " + options.to_s
+  	@response = HTTParty.post('http://www.sentiment140.com/api/bulkClassifyJson?appid=f.ssat95@gmail.com',
+						:body => options.to_json, :headers => { 'Content-Type' => 'application/json' })
+  	puts "Response: " + @response.read_body
   end
 
   private
@@ -59,6 +63,6 @@ class PowerhouseController < ApplicationController
   	end
 
   	def set_tweet
-	  	@tweet = Tweet.find_by_identifier(params[:id]
+	  	@tweet = Tweet.find_by_identifier(params[:id])
   	end
 end
