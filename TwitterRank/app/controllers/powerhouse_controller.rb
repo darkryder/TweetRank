@@ -70,7 +70,18 @@ class PowerhouseController < ApplicationController
   	temp = URI.extract(@tweet.data, ['http', 'https'])
   	if temp
   		temp.each do |a|
+
+  			if a.include? "://t.co/"
+  				t = HTTParty.get(a)
+  				a = t.request.last_uri.to_s
+  			end
+
+  			a = URI.join(a, "/").to_s
+
   			sites += a  			
+  			if a[-1, 1] != '/'
+	  			sites += '/'
+	  		end
 		end
   	end
   	puts "Sites: " + sites
